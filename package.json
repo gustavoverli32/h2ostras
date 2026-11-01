@@ -1,0 +1,13 @@
+{
+  "name": "h2ostras",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Preview operacional de abastecimentos de água da H2Ostras",
+  "scripts": {
+    "start": "node preview-server.cjs",
+    "dev": "node preview-server.cjs",
+    "build": "node scripts/build.cjs",
+    "check": "node scripts/check.cjs"
+  },
+  "engines": { "node": ">=18" }
+}

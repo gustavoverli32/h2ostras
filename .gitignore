@@ -1,0 +1,19 @@
+# Dependências, arquivos locais e dados sensíveis
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+
+# Saídas e arquivos de publicação privada
+dist/
+*.tar.gz
+*.zip
+.openai/
+sites-build/
+
+# Versões anteriores preservadas somente no computador
+app.js
+styles.css
+h2ostras.html
