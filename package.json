@@ -4,10 +4,22 @@
   "private": true,
   "description": "Preview operacional de abastecimentos de água da H2Ostras",
   "scripts": {
+    "prestart": "node scripts/build.cjs",
     "start": "node preview-server.cjs",
-    "dev": "node preview-server.cjs",
+    "dev": "npm start",
+    "test": "node scripts/test-customer-notes.cjs && node scripts/test-feedback.mjs",
+    "db:generate": "drizzle-kit generate",
     "build": "node scripts/build.cjs",
     "check": "node scripts/check.cjs"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.4",
+    "html2canvas": "1.4.1"
+  },
+  "devDependencies": {
+    "drizzle-kit": "0.31.11"
+  }
 }

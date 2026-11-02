@@ -1,5 +1,6 @@
 # Dependências, arquivos locais e dados sensíveis
 node_modules/
+.local-feedback.sqlite*
 .env
 .env.*
 !.env.example
