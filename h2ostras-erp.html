@@ -112,6 +112,14 @@ dialog{border-radius:10px;box-shadow:0 16px 55px #082b4933}.receipt,.risk-box{bo
  .agenda-day{scroll-margin-top:16px}.expense-total strong{font-size:26px}.customer-summary h2{font-size:23px}
 }
 @media print{.sidebar-backdrop,.mobile-menu-button{display:none!important}}
+
+.timeline-event-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.timeline-event-head small{margin-bottom:0}.timeline-event-head+b{margin-top:7px}
+.delete-note{display:inline-flex;align-items:center;justify-content:center;flex:none;width:32px;min-height:32px;height:32px;padding:0;border:0;border-radius:4px;background:transparent;color:#b53632;font-size:23px;line-height:1;font-weight:500}
+.delete-note:hover{background:#fff0ee;color:#952a26}
+.delete-confirm{background:#b53632;border-color:#b53632;color:white}.delete-confirm:hover{background:#952a26;border-color:#952a26;color:white}
+.delete-note-preview{max-height:220px;overflow:auto}
+@media(max-width:700px){.delete-note{width:40px;min-height:40px;height:40px}}
 </style></head><body>
 <aside id="sidebar" aria-label="Menu principal"><div class="sidebar-head"><div class="brand">H<span>2</span>O<span class="brand-tail">stras</span><small>Gestão de entregas</small></div><button type="button" id="sidebarToggle" class="sidebar-toggle" data-action="sidebar-toggle" aria-label="Retrair menu" aria-expanded="true" aria-controls="nav" title="Retrair menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 7-5 5 5 5"/></svg></button></div><nav aria-label="Navegação principal" id="nav"></nav><div class="side-foot"><b>Rio das Ostras · RJ</b><button class="backup-link" data-action="backup" aria-label="Baixar cópia dos dados" title="Baixar cópia dos dados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg><span>Baixar cópia dos dados</span></button></div></aside><button class="sidebar-backdrop" data-action="sidebar-close" aria-label="Fechar menu" tabindex="-1" hidden></button>
 <div class="shell"><header><div class="header-title"><button class="mobile-menu-button" type="button" data-action="sidebar-open" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div><h1 id="title"></h1><p id="subtitle"></p></div></div><div id="headerAction"></div></header><div class="notice"><strong>Ambiente de demonstração</strong> · Dados salvos apenas neste navegador.</div><main id="view"></main></div>
@@ -227,7 +235,7 @@ function customerProfile(id){
  if(!o.history?.length&&!o.createdAt)events.push({at:o.date?o.date+'T'+(o.time||'12:00')+':00-03:00':'',label:'Pedido #'+o.code+' · '+o.status,text:'Data programada da entrega. Registro anterior sem data de criação disponível.',order:o.id});
  }
  for(const p of payments)events.push({at:p.date+'T12:00:00-03:00',dateOnly:true,label:'Pagamento recebido · '+money(p.amount),text:p.method+' · Pedido #'+orders.find(o=>o.id===p.order)?.code,order:p.order});
- for(const i of c.interactions||[])events.push({at:i.at,label:i.kind,text:i.text});
+ for(const i of c.interactions||[])events.push({at:i.at,label:i.kind,text:i.text,noteId:i.id});
  for(const h of c.profileHistory||[])events.push({at:h.at,label:'Atualização cadastral',text:h.text});
  events.sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0));
  const delivered=orders.filter(o=>o.status==='Entregue');
@@ -235,9 +243,23 @@ function customerProfile(id){
  return '<div class="profile-back"><a href="#clientes">← Voltar aos clientes</a></div><section class="panel customer-summary"><div><h2>'+esc(c.name)+'</h2><p>'+esc(c.phone||'Telefone não informado')+'</p><p class="muted">'+esc(c.address||'Endereço não informado')+'</p></div>'+btn('+ Registrar conversa','customer-note',id,'primary')+'</section>'+
 '<div class="client-totals"><span><b>'+orders.length+'</b> atendimento(s)</span><span>A receber <b>'+money(balance)+'</b></span></div>'+
 '<section class="panel"><h2>Vendas deste cliente</h2>'+simpleOrderList(orders.slice().sort((a,b)=>b.code-a.code))+'</section>'+
-'<section class="panel"><h2>Histórico de conversas e atendimentos</h2><ol class="timeline">'+(events.map(e=>'<li><small>'+(e.at?(e.dateOnly?date(e.at.slice(0,10)):new Date(e.at).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})):'Data não registrada')+'</small><b>'+esc(e.label)+'</b><p class="preserve">'+esc(e.text)+'</p>'+(e.order?btn('Ver venda','order',e.order,'link'):'')+'</li>').join('')||'<li>Nenhuma conversa registrada ainda.</li>')+'</ol></section>'+
+'<section class="panel"><h2>Histórico de conversas e atendimentos</h2><ol class="timeline">'+(events.map(e=>'<li><div class="timeline-event-head"><small>'+(e.at?(e.dateOnly?date(e.at.slice(0,10)):new Date(e.at).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'})):'Data não registrada')+'</small>'+(e.noteId?'<button type="button" class="delete-note" data-action="delete-customer-note" data-client="'+esc(id)+'" data-id="'+esc(e.noteId)+'" aria-label="Excluir registro: '+esc(e.label)+'" title="Excluir registro"><span aria-hidden="true">×</span></button>':'')+'</div><b>'+esc(e.label)+'</b><p class="preserve">'+esc(e.text)+'</p>'+(e.order?btn('Ver venda','order',e.order,'link'):'')+'</li>').join('')||'<li>Nenhuma conversa registrada ainda.</li>')+'</ol></section>'+
 '<details class="panel" '+(c.riskLevel&&c.riskLevel!=='Sem alerta'?'open':'')+'><summary>Observações e cuidados com o cliente'+(c.riskLevel&&c.riskLevel!=='Sem alerta'?' · '+esc(c.riskLevel):'')+'</summary><p class="preserve">'+esc(c.notes||'Nenhuma observação.')+'</p><p>'+esc(c.riskReason||'Nenhum cuidado específico registrado.')+'</p>'+(c.followup?'<p>Próximo contato: '+date(c.followup)+'</p>':'')+btn('Editar informações','client',id)+'</details>';
 
+}
+
+let pendingNoteDeletion=null;
+function openDeleteCustomerNote(clientId,noteId){
+ const c=client(clientId),note=c?.interactions?.find(i=>i.id===noteId);
+ if(!note){notify('Registro não encontrado.');return}
+ pendingNoteDeletion={clientId,noteId};returnFocus=document.activeElement;
+ $('#dialogTitle').textContent='Deseja realmente excluir?';
+ $('#dialogBody').innerHTML='<p>Este registro será excluído do histórico de <b>'+esc(c.name)+'</b>.</p><div class="receipt delete-note-preview"><b>'+esc(note.kind)+'</b><p class="preserve">'+esc(note.text)+'</p></div><form id="deleteCustomerNoteForm"><p class="error" id="deleteNoteError" role="alert"></p><div class="form-foot">'+btn('Cancelar','close')+'<button type="submit" class="delete-confirm">Excluir</button></div></form>';
+ $('#dialog').showModal();$('#deleteCustomerNoteForm [data-action="close"]').focus();
+}
+function removeCustomerNote(clientId,noteId){
+ if(!client(clientId)?.interactions?.some(i=>i.id===noteId))return false;
+ return change(next=>{const c=next.clients.find(c=>c.id===clientId);c.interactions=c.interactions.filter(i=>i.id!==noteId)});
 }
 function openCustomerNote(id){profileId=id;returnFocus=document.activeElement;$('#dialogTitle').textContent='Registrar contato / ocorrência';$('#dialogBody').innerHTML='<form id="customerNoteForm"><div class="form-grid">'+select('kind','Tipo de registro',['Contato','Ocorrência operacional','Observação de cobrança','Retorno combinado'],'Contato')+'<label class="wide">Descrição<textarea name="text" rows="5" required placeholder="Descreva o contato, o fato observado ou o combinado com o cliente."></textarea></label></div><p class="error" id="noteError" role="alert"></p><div class="form-foot">'+btn('Cancelar','close')+'<button class="primary">Salvar registro</button></div></form>';$('#dialog').showModal();$('#customerNoteForm select').focus()}
 
@@ -255,7 +277,7 @@ if(kind==='payment'){const o=db.orders.find(o=>o.id===id);title='Receber pedido 
 $('#dialogTitle').textContent=title;$('#dialogBody').innerHTML=extra+`<form id="editor"><div class="form-grid">${body}</div><p id="formError" role="alert" class="error"></p><div class="form-foot">${btn('Cancelar','close')}<button class="primary" type="submit">Salvar ${kind==='payment'?'recebimento':''}</button></div></form>`;if(!$('#dialog').open)$('#dialog').showModal();$('#editor input, #editor select')?.focus();}
 
 function openProgress(id,action){const o=db.orders.find(o=>o.id===id);if(!o)return;modalKind='order';modalId=id;returnFocus=document.activeElement;const finish=action==='finish-sale';$('#dialogTitle').textContent=finish?'Concluir entrega':'Confirmar venda';$('#dialogBody').innerHTML='<div class="receipt"><b>'+esc(client(o.client)?.name)+'</b><p>'+number(o.volume)+' litros · '+money(o.total)+'</p><p>'+esc(o.address)+'</p></div><form id="editor" data-progress="'+action+'"><div class="form-grid">'+(finish?'<div class="wide">'+field('receiver','Quem recebeu a água?',o.receiver||'')+'</div>':field('date','Dia da entrega',o.date||today(),'date')+field('time','Horário',o.time||'09:00','time'))+'</div><p class="error" id="formError" role="alert"></p><div class="form-foot">'+btn('Voltar','close')+'<button class="primary" type="submit">'+(finish?'Confirmar entrega':'Confirmar venda')+'</button></div></form>';$('#dialog').showModal();$('#editor input').focus()}
-function closeEditor(){addingSaleClient=false;if($('#dialog').open)$('#dialog').close();returnFocus?.isConnected&&returnFocus.focus()}
+function closeEditor(){pendingNoteDeletion=null;addingSaleClient=false;if($('#dialog').open)$('#dialog').close();returnFocus?.isConnected&&returnFocus.focus()}
 function saveEditor(form){let f=Object.fromEntries(new FormData(form));for(const k of Object.keys(f))f[k]=f[k].trim();const kind=modalKind,id=modalId;
 if(form.dataset.progress){const previous=db.orders.find(o=>o.id===id);if(!previous)throw Error('Venda não encontrada.');f={...previous,...f,status:form.dataset.progress==='confirm-sale'?'Agendado':'Entregue'};}
 for(const k of ['volume','total','capacity','quantity','min','amount','interval'])if(k in f)f[k]=Number(f[k]);for(const el of form.querySelectorAll('[required]'))if(!String(f[el.name]??'').trim())throw Error('Preencha todos os campos obrigatórios.');
@@ -280,8 +302,14 @@ if(a==='calendar-day'){agendaDay=id;calendarMonth=id.slice(0,7);render();return}
 if(a==='agenda-sale'){saleDraft={...(saleDraft||{}),date:agendaDay,time:saleDraft?.time||'09:00',status:saleDraft?.status||'Agendado'};location.hash='nova-venda';return}
 if(a==='sale-client'){saleDraft=Object.fromEntries(new FormData($('#saleForm')));addingSaleClient=true;openEditor('client');return}
 if(a==='confirm-sale'||a==='finish-sale')return openProgress(id,a);
+if(a==='delete-customer-note')return openDeleteCustomerNote(b.dataset.client,id);
 if(a==='profile'){location.hash='cliente/'+encodeURIComponent(id);return}if(a==='customer-note'){return openCustomerNote(id)}if(a==='close')return closeEditor();if(a==='backup')return download(JSON.stringify(db,null,2),'h2ostras-backup-'+today()+'.json','application/json');if(a==='csv'){const cell=v=>'"'+String(v??'').replace(/^[=+@-]/,"'").replaceAll('"','""')+'"';const rows=[['Pedido','Cliente','Data','Litros','Total','Recebido','Status'],...db.orders.map(o=>[o.code,client(o.client)?.name,o.date,o.volume,o.total,o.paid,o.status])];return download('\ufeff'+rows.map(r=>r.map(cell).join(';')).join('\r\n'),'h2ostras-pedidos.csv','text/csv;charset=utf-8')}openEditor(a,id)});
-document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='customerNoteForm'){const f=Object.fromEntries(new FormData(e.target));if(!f.text.trim()){$('#noteError').textContent='Descreva o contato ou ocorrência.';return}if(change(n=>{n.clients.find(c=>c.id===profileId).interactions=[...(n.clients.find(c=>c.id===profileId).interactions||[]),{id:uid(),at:new Date().toISOString(),kind:f.kind,text:f.text.trim()}]})){closeEditor();render();notify('Registro adicionado ao histórico do cliente.')}return}if(e.target.id==='saleForm'){modalKind='order';modalId='';try{saveEditor(e.target)}catch(err){$('#saleError').textContent=err.message}return}if(e.target.id==='editor'){try{saveEditor(e.target)}catch(err){$('#formError').textContent=err.message}}if(e.target.id==='settingsForm'){const f=Object.fromEntries(new FormData(e.target));if(!f.company.trim()||!f.city.trim()){$('#settingsError').textContent='Preencha nome e cidade.';return}if(change(n=>n.settings={...f,rate:Number(f.rate)})){render();notify('Configurações salvas.')}}});
+document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='deleteCustomerNoteForm'){
+ if(!pendingNoteDeletion)return;
+ const {clientId,noteId}=pendingNoteDeletion;
+ if(!removeCustomerNote(clientId,noteId)){$('#deleteNoteError').textContent='Não foi possível excluir este registro. Verifique se ele ainda existe e tente novamente.';return}
+ closeEditor();render();notify('Registro excluído.');$('#view [data-action="customer-note"]')?.focus();return;
+}if(e.target.id==='customerNoteForm'){const f=Object.fromEntries(new FormData(e.target));if(!f.text.trim()){$('#noteError').textContent='Descreva o contato ou ocorrência.';return}if(change(n=>{n.clients.find(c=>c.id===profileId).interactions=[...(n.clients.find(c=>c.id===profileId).interactions||[]),{id:uid(),at:new Date().toISOString(),kind:f.kind,text:f.text.trim()}]})){closeEditor();render();notify('Registro adicionado ao histórico do cliente.')}return}if(e.target.id==='saleForm'){modalKind='order';modalId='';try{saveEditor(e.target)}catch(err){$('#saleError').textContent=err.message}return}if(e.target.id==='editor'){try{saveEditor(e.target)}catch(err){$('#formError').textContent=err.message}}if(e.target.id==='settingsForm'){const f=Object.fromEntries(new FormData(e.target));if(!f.company.trim()||!f.city.trim()){$('#settingsError').textContent='Preencha nome e cidade.';return}if(change(n=>n.settings={...f,rate:Number(f.rate)})){render();notify('Configurações salvas.')}}});
 document.addEventListener('input',e=>{if(e.target.closest('#saleForm'))saleDraft=Object.fromEntries(new FormData($('#saleForm')));if(e.target.id==='search'){const pos=e.target.selectionStart;query=e.target.value;render();$('#search').focus();$('#search').setSelectionRange(pos,pos)}});
 document.addEventListener('change',e=>{
 const form=e.target.closest('form');
@@ -290,5 +318,5 @@ if(e.target.name==='status'&&$('#receiverField'))$('#receiverField').hidden=e.ta
 if(form?.id==='saleForm')saleDraft=Object.fromEntries(new FormData(form));
 });
 function route(){let key=location.hash.slice(1)||'atendimento';profileId='';if(key.startsWith('cliente/')){try{profileId=decodeURIComponent(key.slice(8))}catch{}key='clientes'}const aliases={inicio:'atendimento',home:'atendimento',pedidos:'atendimento',orders:'atendimento',financeiro:'despesas',finance:'despesas',clients:'clientes'};key=aliases[key]||key;if(!routes[key]){location.hash='atendimento';return}current=key;query='';filter='';render();window.scrollTo(0,0)}
-window.addEventListener('hashchange',route);$('#dialog').addEventListener('click',e=>{if(e.target===$('#dialog'))closeEditor()});route();
+$('#dialog').addEventListener('cancel',()=>{pendingNoteDeletion=null});window.addEventListener('hashchange',route);$('#dialog').addEventListener('click',e=>{if(e.target===$('#dialog'))closeEditor()});route();
 </script></body></html>

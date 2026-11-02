@@ -12,7 +12,7 @@ Visual formal com a paleta azul da H2Ostras, superfícies sem sombras fortes e b
 - **Nova venda:** cliente, água, quantidade, valor, data, horário e endereço. Permite cadastrar o cliente durante a venda sem perder os campos preenchidos. Observações e detalhes são opcionais e ficam recolhidos.
 - **Agenda:** calendário mensal com quantidade de entregas por dia, horários e acesso às vendas. Nova venda neste dia preenche a data selecionada. Reagendamentos atualizam o calendário; solicitações, orçamentos e cancelamentos não ocupam a agenda.
 - **Despesas:** cadastro e edição de descrição, categoria, valor e data; total do mês e busca.
-- **Clientes:** cadastro simples, nomes clicáveis e histórico de vendas, conversas, mudanças de etapa e pagamentos. Cuidados e observações ficam em uma seção recolhível.
+- **Clientes:** cadastro simples, nomes clicáveis e histórico de vendas, conversas, mudanças de etapa e pagamentos. Conversas e ocorrências manuais têm um X vermelho para exclusão, com confirmação e prévia do registro. Cancelar mantém o conteúdo. Eventos automáticos de vendas e pagamentos permanecem no histórico. Cuidados e observações ficam em uma seção recolhível.
 
 As etapas anteriores são agrupadas visualmente, sem reescrever registros: Solicitação/Orçamento em A atender; Agendado/Em rota/Abastecendo em Entrega; Entregue em Concluído. Pagamento pendente permanece identificado. Cancelamentos continuam no histórico.
 
@@ -31,6 +31,12 @@ Abra http://127.0.0.1:4173. Também é possível abrir `index.html` diretamente 
 ```sh
 npm run check
 npm run build
+```
+
+Para verificar a exclusão de comentários e a preservação dos demais registros:
+
+```sh
+node scripts/test-customer-notes.cjs
 ```
 
 O build gera `dist/index.html` para hospedagem estática.
