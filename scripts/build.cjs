@@ -14,6 +14,8 @@ for (const [name, file, type] of [
   ['login.html','login.html','text/html; charset=utf-8'],
   ['login.css','login.css','text/css; charset=utf-8'],
   ['login.js','login.js','text/javascript; charset=utf-8'],
+  ['mobile.css','mobile.css','text/css; charset=utf-8'],
+  ['mobile.js','mobile.js','text/javascript; charset=utf-8'],
   ['vendor/html2canvas.min.js','node_modules/html2canvas/dist/html2canvas.min.js','text/javascript; charset=utf-8']
 ]) assets[name] = { type, content: fs.readFileSync(path.join(root, file), 'utf8') };
 const moduleSource=file=>fs.readFileSync(path.join(root,file),'utf8').replace(/^import .* from '\.\/[^']+';\r?\n/gm,'');

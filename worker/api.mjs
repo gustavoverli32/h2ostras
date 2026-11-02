@@ -30,6 +30,19 @@ function selection(value) {
 }
 export async function handleApi(request, env) {
   const url = new URL(request.url), path = url.pathname;
+  if (path === '/api/public/feedback-summary' && request.method === 'GET') {
+    if (!env.DB) return json({ error: 'Resumo indisponível.' }, 503);
+    try {
+      const row = await env.DB.prepare(`SELECT COUNT(*) AS total,
+        SUM(CASE WHEN status <> 'Concluído' THEN 1 ELSE 0 END) AS open FROM h2ostras_feedback`).first();
+      return Response.json({ project: 'H2O Ostras', total: Number(row?.total || 0), open: Number(row?.open || 0) }, {
+        headers: { ...headers, 'Access-Control-Allow-Origin': 'https://gustavoverli32.github.io', 'Vary': 'Origin' }
+      });
+    } catch (error) {
+      console.error('Public feedback summary failed:', error.message);
+      return json({ error: 'Resumo indisponível.' }, 503);
+    }
+  }
   const {user,isDev,appAccess,nativeSignedIn}=await resolveAccess(request,env);
   if (path === '/api/session' && request.method === 'GET') return json({ signedIn: appAccess, nativeSignedIn, isDeveloper: isDev, email: appAccess?user?.email:null, signInUrl: '/login', devSignInUrl: '/signin-with-chatgpt?return_to=' + encodeURIComponent('/desenvolvedor') });
   try {

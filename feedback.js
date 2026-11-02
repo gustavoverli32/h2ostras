@@ -48,7 +48,8 @@
     annotation.innerHTML='<div class="annotation-instruction"><div><h2 id="annotationTitle">Marque o que deseja alterar</h2><p>Clique em um elemento ou arraste uma área.</p></div><div class="annotation-tools"><button type="button" data-note-action="move" aria-label="Mover instruções para outra borda" title="Mover instruções">↕</button><button type="button" data-note-action="close">Cancelar</button></div></div><div class="annotation-box" hidden></div>';
     annotation.showModal();
     controller=new AbortController();const opts={signal:controller.signal};
-    annotation.addEventListener('pointerdown',e=>{if(e.target.closest('.annotation-instruction'))return;e.preventDefault();origin={x:e.clientX,y:e.clientY};annotation.setPointerCapture(e.pointerId)},opts);
+    annotation.addEventListener('pointerdown',e=>{if(!e.isPrimary||e.button!==0||e.target.closest('.annotation-instruction'))return;e.preventDefault();origin={x:e.clientX,y:e.clientY};annotation.setPointerCapture(e.pointerId)},opts);
+    annotation.addEventListener('pointercancel',()=>{origin=null;annotation.querySelector('.annotation-box').hidden=true},opts);
     annotation.addEventListener('pointermove',e=>{if(!origin)return;paint(rect(origin,{x:e.clientX,y:e.clientY}))},opts);
     annotation.addEventListener('pointerup',e=>{if(!origin)return;const from=origin;origin=null;let area=rect(from,{x:e.clientX,y:e.clientY});
       annotation.close();let target=document.elementFromPoint(from.x,from.y);

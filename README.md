@@ -14,7 +14,15 @@ O servidor verifica `APP_PASSWORD_HASH` (PBKDF2-SHA256, 100.000 iterações, sal
 
 A senha da operação permite enviar anotações, mas não ler a caixa Dev. O desenvolvedor mantém o login nativo com ChatGPT e a autorização por `DEVELOPER_EMAILS`.
 
-## Cinco áreas
+## Uso no celular
+
+A interface web se adapta a telas de Android e iPhone, inclusive na horizontal. Até 900 px, a navegação usa menu móvel; formulários e anotações acompanham a altura visível da tela. Os controles de edição usam fontes de pelo menos 16 px, os botões principais têm área de toque de 44 px, e telefone, volume e valores pedem o teclado adequado. As margens consideram recortes da tela e a barra inferior do aparelho. O botão Anotar fica oculto durante a edição de campos e com o menu aberto, evitando cobrir os controles.
+
+O calendário, o histórico de clientes e a caixa Dev também se reorganizam em telas estreitas. A ampliação por gesto permanece habilitada. Não é necessário instalar um aplicativo nativo.
+
+Validação realizada em navegador com viewports 320 × 568, 360 × 800, 390 × 844 e 844 × 390: entrada, menu, venda, despesa, calendário, histórico, seleção de área e caixa Dev. Esses testes verificam o comportamento responsivo; não substituem testes em aparelhos físicos com Safari/iOS e Chrome/Android, nem reproduzem integralmente o teclado nativo.
+
+## Áreas da operação
 
 - **Atendimento:** quadro com A atender, Entrega e Concluído. Confirmar a venda pede data e horário; concluir a entrega pede quem recebeu. O pagamento pode ser registrado na própria venda concluída.
 - **Nova venda:** cliente, água, quantidade, valor, data, horário e endereço. Permite cadastrar o cliente durante a venda sem perder os campos preenchidos. Observações e detalhes são opcionais e ficam recolhidos.

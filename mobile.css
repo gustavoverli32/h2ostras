@@ -1,0 +1,49 @@
+/* Shared touch and viewport behavior for the operation, login and developer inbox. */
+:root{--usable-height:100vh;--visual-top:0px;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
+@supports(height:100dvh){:root{--usable-height:100dvh}}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button,a,input,select,textarea,summary{touch-action:manipulation}
+@media(max-width:900px){
+  input,select,textarea,#annotationForm input,#annotationForm select,#annotationForm textarea{font-size:16px;min-height:48px;max-width:100%}
+  input[type=date],input[type=time]{min-width:0;display:block;-webkit-appearance:none;appearance:none}
+  input::-webkit-date-and-time-value{text-align:left;min-height:1.4em}
+  button,.button,.card-buttons button,.backup-link{min-height:44px}
+  .mobile-menu-button,.sidebar-toggle,.delete-note,.annotation-heading button,.dialog-head [data-action=close],.annotation-tools button{min-width:44px;min-height:44px;height:auto}
+  .shell,.sidebar-collapsed .shell{padding:0 calc(14px + var(--safe-right)) calc(88px + var(--safe-bottom)) calc(14px + var(--safe-left))}
+  .shell>header{margin:0 calc(-14px - var(--safe-right)) 0 calc(-14px - var(--safe-left));padding:calc(18px + var(--safe-top)) calc(14px + var(--safe-right)) 18px calc(14px + var(--safe-left))}
+  .header-title{min-width:0;flex-basis:100%}.header-title>div{min-width:0}.header-title h1{overflow-wrap:anywhere}
+  aside#sidebar{height:var(--usable-height);bottom:auto;top:var(--visual-top);max-width:calc(100vw - 44px);overscroll-behavior:contain;padding-bottom:var(--safe-bottom)}
+  .sidebar-head{padding-top:calc(18px + var(--safe-top));height:auto;min-height:90px;flex-shrink:0}
+  .side-foot{flex-shrink:0;padding-left:calc(20px + var(--safe-left))}.side-foot .backup-link{font-size:12px}
+  #nav{flex-shrink:0}.sidebar-open .annotation-launch{visibility:hidden;pointer-events:none}
+  #view,.form-grid,.form-grid>*{min-width:0}.panel,.sale-panel{padding:16px}
+  .form-foot{flex-wrap:wrap;gap:10px}.form-foot>*{flex:1;min-width:100px;text-align:center;display:flex;justify-content:center;align-items:center}
+  .dialog-head{gap:8px;align-items:flex-start}.dialog-head>div{flex:1;min-width:0}.dialog-head h2{overflow-wrap:anywhere}
+  #dialog,#annotationDialog.annotation-form{position:fixed;top:calc(var(--visual-top) + var(--safe-top) + 8px);bottom:auto;left:0;right:0;margin:0 auto;width:min(700px,calc(100% - 16px - var(--safe-left) - var(--safe-right)));max-width:calc(100% - 16px - var(--safe-left) - var(--safe-right));max-height:calc(var(--usable-height) - var(--safe-top) - var(--safe-bottom) - 16px);padding:18px;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:20px;-webkit-overflow-scrolling:touch}
+  #dialog .form-foot,#annotationForm .form-foot{padding-bottom:4px}
+  .timeline{max-height:none;padding-left:10px}.timeline li{padding-left:12px}.timeline-event-head{gap:8px}
+  .record-row,.customer-summary,.client-totals{gap:14px}.client-totals>div{min-width:0}
+  .optional>summary,details.panel>summary{min-height:44px;padding:10px 0}
+  .calendar-toolbar{align-items:center;gap:10px}.calendar-toolbar h2{font-size:17px;line-height:1.4;flex:1;min-width:0}
+  .calendar-toolbar .actions{gap:5px;flex-wrap:nowrap}.calendar-toolbar .actions button{padding:8px;min-width:44px}
+  .calendar-week span{padding:6px 0}.calendar-day{min-height:56px;font-size:14px}
+  .annotation-launch{min-height:44px;right:calc(14px + var(--safe-right));bottom:calc(14px + var(--safe-bottom))}
+  .mobile-editing .annotation-launch{visibility:hidden;pointer-events:none}
+  .toast{right:calc(14px + var(--safe-right));bottom:calc(76px + var(--safe-bottom));max-width:calc(100% - 28px - var(--safe-right) - var(--safe-left))}
+  .annotation-instruction{top:calc(12px + var(--safe-top));width:calc(100% - 20px - var(--safe-left) - var(--safe-right));padding:12px;gap:8px}
+  .annotation-instruction.instruction-bottom{top:auto;bottom:calc(12px + var(--safe-bottom))}
+  .annotation-instruction h2{font-size:14px}.annotation-instruction p{font-size:12px}.annotation-tools{gap:4px}
+  #annotationDialog.annotation-select{height:100dvh}.annotation-heading h2{font-size:19px}.annotation-preview{max-height:160px}
+  #annotationDialog .link{min-height:44px}.annotation-modal-launch{font-size:12px!important;min-height:44px}
+  .access-card{min-width:0}.access-card input{font-size:16px}.access-card .dev-row a{min-width:44px;min-height:44px;justify-content:flex-end;align-items:center}
+  body:has(.access-card){padding:calc(20px + var(--safe-top)) calc(20px + var(--safe-right)) calc(20px + var(--safe-bottom)) calc(20px + var(--safe-left))}
+  #devRoot{padding:0 calc(16px + var(--safe-right)) calc(28px + var(--safe-bottom)) calc(16px + var(--safe-left));margin-top:20px}
+  body:has(#devRoot)>header{padding:calc(20px + var(--safe-top)) calc(16px + var(--safe-right)) 20px calc(16px + var(--safe-left));flex-wrap:wrap}
+  body:has(#devRoot)>header a{display:inline-flex;align-items:center;min-height:44px}
+  #devRoot .toolbar{align-items:stretch}#devRoot .toolbar label{display:grid;gap:8px;min-width:0;flex:1 1 180px}#devRoot select{width:100%;margin:0;max-width:100%}
+  #devRoot .report-head{flex-direction:column;gap:10px}#devRoot .status-form{margin-left:0;flex:1 1 100%;align-items:flex-end}#devRoot .status-form label{flex:1;min-width:0;display:grid;gap:8px}
+  #devRoot summary{padding:12px 0;min-height:44px}#devRoot .login{margin:30px auto}#devRoot .button{white-space:normal}
+}
+@media(max-width:360px){.card-buttons{grid-template-columns:1fr}.calendar-toolbar h2{flex-basis:100%}.calendar-toolbar .actions{margin-left:auto}.annotation-instruction{flex-wrap:wrap}.annotation-tools{margin-left:auto}.dialog-head{flex-wrap:wrap}.dialog-head>div{flex-basis:calc(100% - 120px)}}
+@media(max-width:900px) and (max-height:500px){body:has(.access-card){display:block;padding:16px}.access-card{margin:auto;min-height:0;grid-template-columns:.8fr 1fr}.access-card .brand-panel{padding:24px}.access-card .intro{padding:24px 0}.access-card h1{font-size:27px}.access-card .intro .eyebrow,.access-card .intro>p:last-child,.access-card .brand-footer{display:none}.access-card .form-panel{padding:24px}.access-card h2{font-size:23px}.access-card .description{margin-bottom:16px}.access-card .eyebrow{margin-bottom:10px}.access-card .dev-row{margin-top:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}

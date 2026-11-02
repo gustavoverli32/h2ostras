@@ -16,6 +16,9 @@ assert.equal((await send('/api/feedback','POST',form(),'client','https://other.e
 assert.equal((await send('/api/feedback','POST',{...form(),message:' '})).status,400);
 assert.equal((await send('/api/feedback','POST',{...form(),image:'data:image/svg+xml,<svg/>'})).status,400);
 const first=form();assert.equal((await send('/api/feedback','POST',first)).status,201);
+const publicSummary=await (await send('/api/public/feedback-summary','GET',null,null)).json();
+assert.deepEqual({total:publicSummary.total,open:publicSummary.open},{total:1,open:1});
+assert.equal(publicSummary.items,undefined);
 assert.equal((await send('/api/feedback','POST',first)).status,200);
 assert.equal((await send('/api/feedback','POST',first,'other')).status,409);
 let listing=await (await send('/api/dev/feedback','GET',null,'dev')).json();
