@@ -1,13 +1,14 @@
 # H2Ostras — Operação simples
 
-Plataforma de demonstração para entregas de água em Rio das Ostras, com quatro áreas principais e formulários objetivos.
+Plataforma de demonstração para entregas de água em Rio das Ostras, com cinco áreas principais e formulários objetivos.
 
 [Abrir plataforma pública](https://h2ostras-operacao.gustavoverli.chatgpt.site/#atendimento)
 
-## Quatro áreas
+## Cinco áreas
 
 - **Atendimento:** quadro com A atender, Entrega e Concluído. Confirmar a venda pede data e horário; concluir a entrega pede quem recebeu. O pagamento pode ser registrado na própria venda concluída.
 - **Nova venda:** cliente, água, quantidade, valor, data, horário e endereço. Permite cadastrar o cliente durante a venda sem perder os campos preenchidos. Observações e detalhes são opcionais e ficam recolhidos.
+- **Agenda:** calendário mensal com quantidade de entregas por dia, horários e acesso às vendas. Nova venda neste dia preenche a data selecionada. Reagendamentos atualizam o calendário; solicitações, orçamentos e cancelamentos não ocupam a agenda.
 - **Despesas:** cadastro e edição de descrição, categoria, valor e data; total do mês e busca.
 - **Clientes:** cadastro simples, nomes clicáveis e histórico de vendas, conversas, mudanças de etapa e pagamentos. Cuidados e observações ficam em uma seção recolhível.
 
@@ -47,6 +48,7 @@ O build gera `dist/index.html` para hospedagem estática.
 3. Acompanhar a venda no quadro Atendimento; confirmar e concluir a entrega.
 4. Registrar o recebimento e abrir o nome do cliente para conferir seu histórico.
 5. Registrar uma despesa e conferir o total do mês.
+6. Abrir Agenda, selecionar uma data e consultar as entregas ou iniciar uma venda nesse dia.
 
 ## Persistência e limites
 
@@ -61,3 +63,5 @@ Antes de limpar o armazenamento do navegador, use Baixar cópia dos dados no men
 Testada em navegador real no desktop e em 390 × 844: navegação nas quatro áreas, cadastro de cliente durante a venda com preservação dos campos, solicitação e confirmação, validação de data/horário e recebedor, conclusão e pagamento, perfil com conversa e histórico após recarregar, criação/edição de despesas, total mensal, busca e venda no celular. Sem erros de JavaScript observados.
 
 A referência de estrutura foi o Econ GNV; seus dados operacionais e credenciais não foram copiados.
+
+Agenda verificada no desktop e no celular: troca de mês, dia vazio, botão Hoje, data preenchida na nova venda, venda confirmada aparecendo no calendário, abertura/edição, reagendamento, persistência após recarregar e exclusão de solicitações. Sem erros de JavaScript observados.
