@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { handleApi } from '../worker/api.mjs';
+import { digest } from '../worker/auth.mjs';
 const require=createRequire(import.meta.url),{createLocalDB}=require('./local-db.cjs');
-const DB=createLocalDB(),env={DB,DEVELOPER_EMAILS:'dev@example.test'};
+const DB=createLocalDB(),env={DB,DEVELOPER_EMAILS:'dev@example.test',APP_PASSWORD_HASH:'test-credential-version'};
+const cookies={};for(const who of ['client','other']){const token=Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');cookies[who]='h2o_session='+token;await DB.prepare('INSERT INTO h2ostras_sessions (token_hash,expires_at,password_tag) VALUES (?,?,?)').bind(await digest(token),Date.now()+60000,await digest(env.APP_PASSWORD_HASH)).run()}
 const base='https://h2o.example';
-function request(path,method='GET',body,who='client',origin=base){const headers={};if(who){headers['oai-authenticated-user-id']=who;headers['oai-authenticated-user-email']=who+'@example.test'}if(body){headers['Content-Type']='application/json';headers.Origin=origin}return new Request(base+path,{method,headers,...(body?{body:JSON.stringify(body)}:{})})}
+function request(path,method='GET',body,who='client',origin=base){const headers={};if(who){headers['oai-authenticated-user-id']=who;headers['oai-authenticated-user-email']=who+'@example.test';if(cookies[who])headers.Cookie=cookies[who]}if(body){headers['Content-Type']='application/json';headers.Origin=origin}return new Request(base+path,{method,headers,...(body?{body:JSON.stringify(body)}:{})})}
 const send=(...args)=>handleApi(request(...args),env);
 const form=()=>({id:crypto.randomUUID(),kind:'Melhoria',message:'Teste: melhorar botão',route:'/#clientes',pageTitle:'Clientes',element:'button',selection:{x:10,y:20,width:120,height:50,viewportWidth:390,viewportHeight:844,scrollX:0,scrollY:0},image:'data:image/jpeg;base64,/9j/AA=='});
 assert.equal((await send('/api/dev/feedback','GET',null,null)).status,401);

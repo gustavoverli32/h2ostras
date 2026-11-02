@@ -4,7 +4,15 @@ Plataforma de demonstração para entregas de água em Rio das Ostras, com cinco
 
 Visual formal com a paleta azul da H2Ostras, superfícies sem sombras fortes e barra lateral fixa. No computador, a barra retrai para ícones e memoriza a preferência neste navegador. No celular, o menu abre sobre o conteúdo, fecha pela seleção de uma área, pelo botão, pelo fundo ou por Escape, e mantém o foco do teclado dentro do menu enquanto aberto.
 
-[Abrir plataforma pública](https://h2ostras-operacao.gustavoverli.chatgpt.site/#atendimento)
+[Abrir plataforma](https://h2ostras-operacao.gustavoverli.chatgpt.site/login)
+
+## Acesso
+
+A tela inicial segue o padrão visual de acesso da Econ GNV, com a identidade azul da H2Ostras. A operação exige apenas a senha compartilhada configurada no servidor. O link discreto **DEV** fica abaixo do botão Entrar, somente na tela de login; a barra lateral oferece **Sair**.
+
+O servidor verifica `APP_PASSWORD_HASH` (PBKDF2-SHA256, 100.000 iterações, salt aleatório de 16 bytes e resultado de 32 bytes, ambos em hexadecimal separados por `:`). A senha não faz parte do código ou do repositório. Configure o hash como segredo no runtime Sites. A sessão usa token aleatório, armazenado somente como hash no banco, cookie HttpOnly/SameSite e Secure em HTTPS, com validade de 12 horas. Sair revoga a sessão; trocar o hash invalida as sessões anteriores. Há limite de tentativas por origem de rede.
+
+A senha da operação permite enviar anotações, mas não ler a caixa Dev. O desenvolvedor mantém o login nativo com ChatGPT e a autorização por `DEVELOPER_EMAILS`.
 
 ## Cinco áreas
 
@@ -27,7 +35,7 @@ npm ci
 npm start
 ```
 
-Abra http://127.0.0.1:4173. O servidor local usa SQLite e oferece uma tela explícita de simulação de login como cliente ou desenvolvedor. Essa simulação existe somente no servidor local; não é incluída na publicação. Abrir somente `index.html` não fornece a API de anotações.
+Antes de iniciar, crie `.env` usando `.env.example` e configure um hash de senha de desenvolvimento no formato descrito acima. O servidor lê esse arquivo automaticamente; ele não é versionado. Abra http://127.0.0.1:4173. O login da operação usa a senha configurada. O acesso Dev local oferece uma tela explícita de simulação de identidade, que não é incluída na publicação. Abrir somente `index.html` não fornece o controle de acesso nem a API de anotações.
 
 ```sh
 npm run check
@@ -45,7 +53,7 @@ O build gera `dist/server/index.js`, um Worker ESM com os arquivos da interface 
 
 ## Anotações e área Dev
 
-O botão **Anotar** permite clicar em um elemento ou arrastar uma área, revisar seu recorte e escrever uma solicitação. O cliente escolhe Melhoria, Problema, Alteração ou Remoção. O envio requer login com ChatGPT; o rascunho é preservado durante o login. Somente o recorte selecionado e os dados revisados são enviados. A biblioteca html2canvas é servida pela própria plataforma.
+O botão **Anotar** permite clicar em um elemento ou arrastar uma área, revisar seu recorte e escrever uma solicitação. O cliente escolhe Melhoria, Problema, Alteração ou Remoção. O envio usa a sessão aberta com a senha da operação, sem exigir outra conta. O rascunho é preservado se for necessário entrar novamente. Somente o recorte selecionado e os dados revisados são enviados. A biblioteca html2canvas é servida pela própria plataforma.
 
 As solicitações ficam no banco compartilhado, com autor, data, página, área marcada e situação. A [área Dev](https://h2ostras-operacao.gustavoverli.chatgpt.site/desenvolvedor) permite filtrar solicitações e alterar a situação entre Recebido, Em andamento e Concluído. Tanto os registros quanto as imagens exigem autorização no servidor.
 
@@ -53,7 +61,7 @@ Configure `DEVELOPER_EMAILS` nas variáveis de ambiente privadas do Site, com os
 
 O esquema fica em `db/schema.js`. Após uma alteração de esquema, execute `npm run db:generate`, revise e versione os arquivos de `drizzle/`. O empacotamento do Sites inclui essas migrações para aplicação na publicação. O servidor local aplica as mesmas migrações em `.local-feedback.sqlite`, ignorado pelo Git. Registros de teste locais não vão para produção. Não altere migrações já aplicadas.
 
-Há um limite de 20 solicitações por conta em 24 horas. O envio possui identificador para evitar duplicações em tentativas repetidas; atualizações concorrentes de situação exigem recarregar o registro. A ferramenta registra pedidos para revisão humana, sem executar automaticamente as alterações solicitadas.
+Há um limite de 20 solicitações por identidade ou sessão em 24 horas. O envio possui identificador para evitar duplicações em tentativas repetidas; atualizações concorrentes de situação exigem recarregar o registro. A ferramenta registra pedidos para revisão humana, sem executar automaticamente as alterações solicitadas.
 
 ## Arquivos
 
@@ -80,7 +88,7 @@ Há um limite de 20 solicitações por conta em 24 horas. O envio possui identif
 
 Os cadastros operacionais são uma demonstração com dados fictícios iniciais e persistência no navegador (`localStorage`, chave `h2ostras.erp.v5`). Clientes, vendas, despesas e histórico não são sincronizados entre computadores nem incluídos no repositório. A simplificação mantém a mesma chave e preserva os cadastros existentes. Ao enviar uma anotação, o recorte e o texto revisados pelo usuário ficam no banco compartilhado de solicitações.
 
-O preview operacional é público. Cada navegador tem seus próprios cadastros. O banco compartilhado e o login se aplicam às anotações e à área Dev. Não há emissão fiscal, GPS ou integração bancária.
+O endereço do preview é público, com entrada da operação protegida por senha. Cada navegador tem seus próprios cadastros. O banco compartilhado guarda as anotações e os controles de sessão. A área Dev exige autorização própria. Não há emissão fiscal, GPS ou integração bancária.
 
 Antes de limpar o armazenamento do navegador, use Baixar cópia dos dados no menu lateral em tela ampla. A importação de pedidos de versões anteriores continua preservando as chaves originais; registros incompletos precisam de revisão.
 

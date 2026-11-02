@@ -1,17 +1,10 @@
+import { resolveAccess } from './auth.mjs';
 const STATES = ['Recebido', 'Em andamento', 'Concluído'];
 const KINDS = ['Melhoria', 'Problema', 'Alteração', 'Remoção'];
 const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
 const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin' };
 const json = (body, status = 200) => Response.json(body, { status, headers });
 const fail = (message, status = 400) => { throw Object.assign(new Error(message), { status }); };
-function identity(request) {
-  const id = request.headers.get('oai-authenticated-user-id');
-  const email = request.headers.get('oai-authenticated-user-email');
-  return id && email ? { id, email: email.toLowerCase() } : null;
-}
-function developer(user, env) {
-  return !!user && String(env.DEVELOPER_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean).includes(user.email);
-}
 function text(value, name, max, required = true) {
   if (typeof value !== 'string' || value.length > max || (required && !value.trim())) fail('Campo inválido: ' + name);
   return value.trim();
@@ -36,12 +29,13 @@ function selection(value) {
   return JSON.stringify(out);
 }
 export async function handleApi(request, env) {
-  const url = new URL(request.url), path = url.pathname, user = identity(request);
-  const isDev = developer(user, env);
-  if (path === '/api/session' && request.method === 'GET') return json({ signedIn: !!user, isDeveloper: isDev, email: user?.email || null, signInUrl: '/signin-with-chatgpt?return_to=' + encodeURIComponent('/?anotar=1'), devSignInUrl: '/signin-with-chatgpt?return_to=' + encodeURIComponent('/desenvolvedor') });
+  const url = new URL(request.url), path = url.pathname;
+  const {user,isDev,appAccess,nativeSignedIn}=await resolveAccess(request,env);
+  if (path === '/api/session' && request.method === 'GET') return json({ signedIn: appAccess, nativeSignedIn, isDeveloper: isDev, email: appAccess?user?.email:null, signInUrl: '/login', devSignInUrl: '/signin-with-chatgpt?return_to=' + encodeURIComponent('/desenvolvedor') });
   try {
     if (!user) fail('Entre com sua conta para continuar.', 401);
     if (path.startsWith('/api/dev/') && !isDev) fail('Esta área é exclusiva do desenvolvedor.', 403);
+    if (!appAccess && !path.startsWith('/api/dev/')) fail('Entre com a senha da plataforma para continuar.', 401);
     if (request.method !== 'GET') {
       if (request.headers.get('origin') !== url.origin) fail('Origem não autorizada.', 403);
     }

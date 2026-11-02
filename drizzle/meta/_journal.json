@@ -8,6 +8,13 @@
       "when": 1793630887750,
       "tag": "0000_yielding_jimmy_woo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1793632535153,
+      "tag": "0001_tan_wind_dancer",
+      "breakpoints": true
     }
   ]
 }

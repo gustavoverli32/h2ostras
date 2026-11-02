@@ -6,6 +6,6 @@ const html = fs.readFileSync(path.join(root, 'h2ostras-erp.html'), 'utf8');
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
 if (!scripts.length) throw new Error('Nenhum script encontrado no HTML principal.');
 for (const [index, match] of scripts.entries()) new vm.Script(match[1], { filename: `inline-${index}.js` });
-for (const file of ['feedback.js','developer.js']) new vm.Script(fs.readFileSync(path.join(root,file),'utf8'), {filename:file});
+for (const file of ['feedback.js','developer.js','login.js']) new vm.Script(fs.readFileSync(path.join(root,file),'utf8'), {filename:file});
 if (html !== fs.readFileSync(path.join(root, 'index.html'), 'utf8')) throw new Error('index.html diverge da fonte h2ostras-erp.html. Atualize a cópia antes de enviar.');
 console.log('Sintaxe JavaScript válida e index.html sincronizado.');

@@ -1,6 +1,7 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const {Readable}=require('node:stream');
 const {createLocalDB}=require('./scripts/local-db.cjs');
+if(fs.existsSync(path.join(__dirname,'.env')))process.loadEnvFile(path.join(__dirname,'.env'));
 (async()=>{
  const source=fs.readFileSync(path.join(__dirname,'dist/server/index.js'),'utf8');
  const worker=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).default;
@@ -17,7 +18,7 @@ const {createLocalDB}=require('./scripts/local-db.cjs');
   const headers=new Headers();for(const [k,v] of Object.entries(req.headers))if(v&&!k.startsWith('oai-'))headers.set(k,Array.isArray(v)?v.join(','):v);
   const role=/(?:^|;\s*)h2o_local=(dev|client)(?:;|$)/.exec(req.headers.cookie||'')?.[1];
   if(role){headers.set('oai-authenticated-user-id',role+'-local-test');headers.set('oai-authenticated-user-email',role==='dev'?'dev@example.test':'client@example.test')}
-  const response=await worker.fetch(new Request(url,{method:req.method,headers,...(!['GET','HEAD'].includes(req.method)?{body:Readable.toWeb(req),duplex:'half'}:{})}),{DB,DEVELOPER_EMAILS:'dev@example.test'});
+  const response=await worker.fetch(new Request(url,{method:req.method,headers,...(!['GET','HEAD'].includes(req.method)?{body:Readable.toWeb(req),duplex:'half'}:{})}),{DB,DEVELOPER_EMAILS:'dev@example.test',APP_PASSWORD_HASH:process.env.APP_PASSWORD_HASH});
   res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
  }catch(e){console.error(e);res.writeHead(500);res.end('Falha no preview local.')}}).listen(4173,'127.0.0.1',()=>console.log('http://127.0.0.1:4173 — API local e banco de teste'));
-})();
+})().catch(error=>{console.error('Falha ao iniciar preview:',error.message);process.exitCode=1});

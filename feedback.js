@@ -10,9 +10,10 @@
   launcher.innerHTML = '<span aria-hidden="true">⌖</span> Anotar'; launcher.type = 'button';
   launcher.setAttribute('aria-label','Anotar uma alteração na plataforma');
   document.body.append(annotation,launcher);
-  const devLink=document.createElement('a'); devLink.className='backup-link';devLink.href='/desenvolvedor';devLink.title='Área do desenvolvedor';devLink.setAttribute('aria-label','Área do desenvolvedor');
-  devLink.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/></svg><span>Área Dev</span>';
-  document.querySelector('.side-foot')?.append(devLink);
+  const logout=document.createElement('button');logout.type='button';logout.className='backup-link';logout.title='Sair da plataforma';logout.setAttribute('aria-label','Sair da plataforma');
+  logout.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 4H4v16h5m5-13 5 5-5 5M8 12h11"/></svg><span>Sair</span>';
+  document.querySelector('.side-foot')?.append(logout);
+  logout.addEventListener('click',async()=>{logout.disabled=true;try{saveDraft();const result=await api('/api/logout',{method:'POST'});location.assign(result.redirect)}catch{logout.disabled=false;logout.querySelector('span').textContent='Tentar sair novamente'}});
   const modalLauncher=document.createElement('button');modalLauncher.type='button';modalLauncher.className='annotation-modal-launch';modalLauncher.dataset.annotationUi='true';modalLauncher.textContent='Anotar';
   document.querySelector('#dialog .dialog-head')?.insertBefore(modalLauncher,document.querySelector('#dialog .dialog-head [data-action="close"]'));
   let draft=null, capture=null, origin=null, selection=null, busy=false, session=null, controller=null, priorFocus=null, retained=null;

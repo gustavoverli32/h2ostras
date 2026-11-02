@@ -7,7 +7,7 @@
     "prestart": "node scripts/build.cjs",
     "start": "node preview-server.cjs",
     "dev": "npm start",
-    "test": "node scripts/test-customer-notes.cjs && node scripts/test-feedback.mjs",
+    "test": "node scripts/build.cjs && node scripts/test-customer-notes.cjs && node scripts/test-feedback.mjs && node scripts/test-login.mjs",
     "db:generate": "drizzle-kit generate",
     "build": "node scripts/build.cjs",
     "check": "node scripts/check.cjs"

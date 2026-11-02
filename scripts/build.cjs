@@ -11,9 +11,13 @@ for (const [name, file, type] of [
   ['feedback.css','feedback.css','text/css; charset=utf-8'],
   ['developer.html','developer.html','text/html; charset=utf-8'],
   ['developer.js','developer.js','text/javascript; charset=utf-8'],
+  ['login.html','login.html','text/html; charset=utf-8'],
+  ['login.css','login.css','text/css; charset=utf-8'],
+  ['login.js','login.js','text/javascript; charset=utf-8'],
   ['vendor/html2canvas.min.js','node_modules/html2canvas/dist/html2canvas.min.js','text/javascript; charset=utf-8']
 ]) assets[name] = { type, content: fs.readFileSync(path.join(root, file), 'utf8') };
-const worker = fs.readFileSync(path.join(root, 'worker/api.mjs'), 'utf8') + '\nconst ASSETS=' + JSON.stringify(assets) + ';\n' + fs.readFileSync(path.join(root, 'worker/entry.mjs'), 'utf8');
+const moduleSource=file=>fs.readFileSync(path.join(root,file),'utf8').replace(/^import .* from '\.\/[^']+';\r?\n/gm,'');
+const worker = moduleSource('worker/auth.mjs')+'\n'+moduleSource('worker/api.mjs') + '\nconst ASSETS=' + JSON.stringify(assets) + ';\n' + moduleSource('worker/entry.mjs');
 fs.mkdirSync(path.join(root,'dist/server'), { recursive:true });
 fs.writeFileSync(path.join(root,'dist/server/index.js'), worker);
 fs.mkdirSync(path.join(root,'dist/.openai'), { recursive:true });
