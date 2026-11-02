@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#103b50"><title>Abrir H2Ostras</title><link rel="canonical" href="https://h2ostras-operacao.gustavoverli.chatgpt.site/login"><style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#103b50;color:#15394b;font:16px system-ui,sans-serif}main{width:min(100%,520px);padding:32px;background:white;border-radius:12px}.brand{font-size:28px;font-weight:800;letter-spacing:-1px}.brand span{color:#087fa7}h1{font-size:25px;line-height:1.3;margin:28px 0 12px}p{color:#667b88;line-height:1.6}.actions{display:grid;gap:12px;margin-top:24px}a,button{display:block;text-align:center;font:inherit;font-weight:600;padding:14px 18px;min-height:48px;border-radius:6px;text-decoration:none;cursor:pointer;border:1px solid #cfdbe2;background:white;color:#15394b}a{background:#103b50;color:white;border-color:#103b50}a:focus-visible,button:focus-visible{outline:3px solid #087fa7;outline-offset:4px}.note{font-size:13px}#status:empty,[hidden]{display:none!important}@media(max-width:400px){body{padding:16px}main{padding:24px}}
+</style></head><body><main><div class="brand">H<span>2</span>Ostras</div><h1 id="heading">Abrindo a plataforma…</h1><p id="message">Você será direcionado ao endereço atualizado da H2Ostras.</p><div class="actions"><button id="backup" type="button" hidden>Baixar cópia dos cadastros antigos</button><a id="open" href="https://h2ostras-operacao.gustavoverli.chatgpt.site/login">Abrir plataforma</a></div><p id="localNote" class="note" hidden>Os cadastros deste endereço ficam neste navegador. Eles não serão apagados nem transferidos automaticamente.</p><p id="status" class="note" role="status"></p><noscript><p>Use o botão acima para abrir a plataforma.</p></noscript></main>
+<script>
+(() => {
+  const base='https://h2ostras-operacao.gustavoverli.chatgpt.site';
+  const pathname=location.pathname.replace(/^\/h2ostras\/?/,'/');
+  const dev=/^\/(desenvolvedor\/?|developer\.html)$/.test(pathname);
+  const hash=/^#(?:atendimento|nova-venda|agenda|despesas|clientes|cliente\/[^?#\s<>]{1,200})$/.test(location.hash)?location.hash:'#atendimento';
+  const destination=base+(dev?'/desenvolvedor':'/login'+hash);
+  document.querySelector('#open').href=destination;
+  let saved=null,unavailable=false;
+  try{saved=localStorage.getItem('h2ostras.erp.v5')}catch{unavailable=true}
+  if(!saved&&!unavailable){location.replace(destination);return}
+  document.querySelector('#heading').textContent='A plataforma está em um novo endereço';
+  document.querySelector('#message').textContent=saved?'Há cadastros salvos neste navegador. Baixe uma cópia antes de continuar para o endereço atualizado.':'Não foi possível verificar os cadastros deste navegador. Você pode abrir a plataforma pelo botão abaixo.';
+  document.querySelector('#localNote').hidden=false;
+  const button=document.querySelector('#backup');button.hidden=!saved;
+  button.addEventListener('click',()=>{
+    const url=URL.createObjectURL(new Blob([saved],{type:'application/json'}));
+    const link=document.createElement('a');link.href=url;link.download='h2ostras-cadastros-endereco-antigo.json';document.body.append(link);link.click();link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    document.querySelector('#status').textContent='Cópia solicitada. Confira o arquivo na pasta de downloads antes de continuar.';
+  });
+})();
+</script></body></html>

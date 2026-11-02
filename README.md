@@ -6,6 +6,10 @@ Visual formal com a paleta azul da H2Ostras, superfícies sem sombras fortes e b
 
 [Abrir plataforma](https://h2ostras-operacao.gustavoverli.chatgpt.site/login)
 
+O [link do GitHub Pages](https://gustavoverli32.github.io/h2ostras/) encaminha para essa plataforma completa. O Pages publica apenas a pasta `docs/`, configurada em Settings → Pages → main → /docs; não publique a raiz do repositório como aplicativo. A operação exige o Worker e o banco do Sites: publicar somente o HTML na hospedagem estática faz chamadas como `/api/logout` falharem com HTTP 405.
+
+Se houver cadastros da versão antiga no navegador do Pages, a entrada oferece baixar o JSON original antes de continuar. Não apaga, transmite nem importa esses dados automaticamente. O arquivo `docs/404.html` mantém o encaminhamento de links antigos. Verifique a entrada com `node scripts/test-pages-entry.cjs`.
+
 ## Acesso
 
 A tela inicial segue o padrão visual de acesso da Econ GNV, com a identidade azul da H2Ostras. A operação exige apenas a senha compartilhada configurada no servidor. O link discreto **DEV** fica abaixo do botão Entrar, somente na tela de login; a barra lateral oferece **Sair**.
