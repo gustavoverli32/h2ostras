@@ -2,6 +2,8 @@
 
 Plataforma de demonstração para entregas de água em Rio das Ostras, com cinco áreas principais e formulários objetivos.
 
+Visual formal com a paleta azul da H2Ostras, superfícies sem sombras fortes e barra lateral fixa. No computador, a barra retrai para ícones e memoriza a preferência neste navegador. No celular, o menu abre sobre o conteúdo, fecha pela seleção de uma área, pelo botão, pelo fundo ou por Escape, e mantém o foco do teclado dentro do menu enquanto aberto.
+
 [Abrir plataforma pública](https://h2ostras-operacao.gustavoverli.chatgpt.site/#atendimento)
 
 ## Cinco áreas

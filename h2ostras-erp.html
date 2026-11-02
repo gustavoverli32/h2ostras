@@ -45,9 +45,76 @@ header{padding:30px 0}header p,.muted{font-size:14px}button,.button{min-height:4
 .agenda-delivery p{font-size:14px;color:var(--muted);margin:7px 0;overflow-wrap:anywhere}.agenda-delivery button{margin-top:10px}
 @media(max-width:1000px){.agenda-layout{grid-template-columns:1fr;gap:0}}
 @media(max-width:700px){.agenda-layout .panel{padding:16px}.calendar-day{min-height:54px;padding:7px 2px}.calendar-week,.calendar-grid{gap:3px}.calendar-toolbar h2{font-size:18px}nav a{font-size:10px;white-space:normal;text-align:center}.agenda-day{scroll-margin-top:140px}header:has(+.notice+#view .agenda-layout){flex-wrap:wrap}}
+
+/* Apresentação formal e navegação lateral retrátil. */
+:root{--bg:#f5f7f9;--line:#dce4e9;--muted:#667b88}
+body{font-size:15px}h1{font-size:26px;font-weight:700;letter-spacing:-.5px}h2{font-size:18px;font-weight:650}h3{font-size:16px}
+aside#sidebar{inset:0 auto 0 0;width:240px;border-radius:0;padding:0;background:var(--nav);z-index:30;overflow-y:auto;overflow-x:hidden;border-right:1px solid #0d3446}
+.sidebar-head{height:104px;min-height:104px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:24px 18px;border-bottom:1px solid #ffffff16}
+.brand{font-size:25px;letter-spacing:-1px;padding:0;white-space:nowrap;line-height:1.15}.brand .brand-tail{color:white}.brand small{font-size:9px;letter-spacing:1.2px;color:#a7c1ce;margin-top:8px}
+.sidebar-toggle{display:flex;align-items:center;justify-content:center;width:32px;min-height:32px;flex:none;padding:6px;background:transparent;border:1px solid #ffffff28;border-radius:5px;color:#bdd5e0}
+.sidebar-toggle:hover{background:#ffffff12;color:white;border-color:#ffffff50}.sidebar-toggle svg{width:18px;height:18px}
+#nav{display:flex;flex-direction:column;gap:5px;margin:22px 12px 0;overflow:visible}
+#nav a{position:relative;display:flex;flex-direction:row;justify-content:flex-start;gap:12px;min-height:46px;padding:12px 14px;border-radius:4px;font-size:14px;font-weight:500;text-align:left;white-space:nowrap;color:#c5d9e2;border-left:3px solid transparent}
+#nav a:hover{background:#ffffff0b;color:white}#nav a[aria-current=page]{background:#60d7ed18;border-left-color:var(--accent);color:#86e5f5;box-shadow:none;font-weight:650}
+#nav svg{width:20px;height:20px}
+.side-foot{display:block;margin-top:auto;padding:20px 18px;border-top:1px solid #ffffff16;font-size:11px}.side-foot b{font-weight:500;color:#b7cfdb}
+.backup-link{width:100%;display:flex;align-items:center;gap:10px;justify-content:flex-start;padding:10px 0;margin-top:10px;min-height:40px;background:transparent;color:#adc8d5;border:0;border-radius:4px;font-size:11px;text-align:left}
+.backup-link:hover{background:#ffffff0b;color:white}.backup-link svg{width:18px;height:18px;flex:none}
+.shell{margin-left:240px;padding:0 32px 36px;max-width:none}
+header{min-height:104px;margin:0 -32px;padding:24px 32px;background:white;border-bottom:1px solid var(--line);gap:20px}
+.header-title{display:flex;align-items:center;gap:12px;min-width:0}header p{font-size:13px;line-height:1.5}
+.notice{font-size:11px;padding:14px 0;color:#728592}.notice strong{font-weight:600;color:#537688}
+button,.button{border-radius:5px;font-weight:600;box-shadow:none}button:hover,.button:hover{box-shadow:none}
+input,select,textarea{border-radius:5px;font-size:15px;background:white;border-color:#cfdbe2}
+.panel,.metric,.client-intro,.expense-total{border-radius:8px;box-shadow:none}.panel{padding:24px;margin:16px 0}
+.toolbar{margin:10px 0 24px}.toolbar input{padding:12px 14px}
+.simple-board{gap:22px}.simple-lane{background:transparent;border:0;border-radius:0;padding:0;min-height:0}
+.lane-heading{padding:12px 0;border-bottom:2px solid #dce5ea;gap:9px}.lane-heading h2{font-size:16px}
+.step-number{width:24px;height:24px;border-radius:4px;font-size:12px;background:#e3ebef;color:#426173}
+.simple-lane:nth-child(2) .step-number{background:#dbf1f6;color:#176983}.simple-lane:nth-child(3) .step-number{background:#e0eee8;color:#3d6e5b}
+.count{font-size:13px}.lane-hint{min-height:38px;font-size:12px;line-height:1.5;margin:12px 0 16px}
+.simple-card{border:1px solid var(--line);border-radius:7px;box-shadow:none;padding:18px;margin-bottom:12px}
+.simple-card h3{font-size:16px;line-height:1.45;margin:14px 0 8px}.simple-card p{font-size:13px}.sale-price{font-size:20px;font-weight:650}
+.card-top{font-size:11px}.badge{font-size:10px;border-radius:4px;font-weight:600}.card-buttons{gap:8px}.card-buttons button{font-size:12px;min-height:40px}
+.empty{font-size:13px;line-height:1.6;padding:32px 16px}.simple-lane>.empty{background:white;border:1px dashed var(--line);border-radius:6px}
+.record-row{padding:18px 0}.customer-name{font-size:15px;font-weight:600}.expense-total{background:white;color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--blue)}
+.expense-total span{color:var(--muted)}.expense-total strong{font-size:29px;font-weight:650}.expense-total p{color:var(--muted)}
+.calendar-toolbar h2{font-weight:650}.calendar-day{border-radius:4px;background:white}.calendar-day.selected{background:#e7f7fb;border:1px solid var(--blue);box-shadow:inset 0 0 0 1px var(--blue)}
+.calendar-day.is-today b{border-radius:4px}.calendar-day.outside{opacity:.5}.agenda-delivery time{font-size:18px}
+dialog{border-radius:10px;box-shadow:0 16px 55px #082b4933}.receipt,.risk-box{border-radius:6px}.toast{border-radius:6px;font-size:14px}
+.mobile-menu-button,.sidebar-backdrop{display:none}
+.sidebar-collapsed aside#sidebar{width:76px}
+.sidebar-collapsed .shell{margin-left:76px}
+.sidebar-collapsed .sidebar-head{height:104px;min-height:104px;flex-direction:column;justify-content:center;gap:12px;padding:14px 0}
+.sidebar-collapsed .brand{font-size:21px}.sidebar-collapsed .brand-tail,.sidebar-collapsed .brand small{display:none}
+.sidebar-collapsed .sidebar-toggle svg{transform:rotate(180deg)}
+.sidebar-collapsed #nav{margin:22px 10px 0}.sidebar-collapsed #nav a{justify-content:center;padding:12px 0;gap:0}.sidebar-collapsed #nav a span{display:none}
+.sidebar-collapsed .side-foot{padding:14px 10px}.sidebar-collapsed .side-foot b,.sidebar-collapsed .backup-link span{display:none}
+.sidebar-collapsed .backup-link{justify-content:center;margin:0}
+@media(min-width:701px) and (max-width:1050px){.shell{padding:0 24px 30px}header{margin:0 -24px;padding:24px}.simple-board{gap:14px}.simple-card{padding:14px}}
+@media(max-width:700px){
+ aside#sidebar{width:264px;position:fixed;visibility:hidden;transform:translateX(-100%);z-index:50}
+ .sidebar-open aside#sidebar{visibility:visible;transform:translateX(0)}
+ .sidebar-open{overflow:hidden}
+ .sidebar-head{height:90px;min-height:90px;padding:20px}.brand{font-size:25px}.brand small{display:block}
+ #nav{margin:20px 12px;display:flex;overflow:visible}#nav a{font-size:14px;text-align:left;white-space:nowrap}
+ .side-foot{display:block;padding:18px 20px}
+ .shell,.sidebar-collapsed .shell{margin-left:0;padding:0 18px 28px}
+ header{margin:0 -18px;padding:20px 18px;min-height:90px;flex-wrap:wrap;align-items:center;gap:14px}
+ header:has(+.notice+#view .agenda-layout){flex-wrap:wrap}
+ .header-title{gap:10px;flex:1;min-width:200px}h1{font-size:23px}header p{font-size:12px}
+ .mobile-menu-button{display:flex;align-items:center;justify-content:center;flex:none;background:white;border:1px solid var(--line);padding:9px;width:40px;min-height:40px;border-radius:5px}
+ .mobile-menu-button svg{width:20px;height:20px}
+ .sidebar-backdrop:not([hidden]){display:block;position:fixed;inset:0 0 0 264px;width:auto;height:100%;margin:0;padding:0;border:0;border-radius:0;background:#071c2b66;z-index:40}
+ .notice{font-size:10px;line-height:1.6;padding:12px 0}.panel{padding:18px}.simple-board{gap:26px}.lane-hint{min-height:0}
+ .card-buttons{grid-template-columns:1fr 1fr}.simple-card{padding:18px}.calendar-toolbar h2{font-size:17px}
+ .agenda-day{scroll-margin-top:16px}.expense-total strong{font-size:26px}.customer-summary h2{font-size:23px}
+}
+@media print{.sidebar-backdrop,.mobile-menu-button{display:none!important}}
 </style></head><body>
-<aside><div class="brand">H<span>2</span>Ostras<small>Seu dia a dia, mais simples</small></div><nav aria-label="Navegação principal" id="nav"></nav><div class="side-foot"><b>Rio das Ostras · RJ</b><span id="version"><button class="backup-link" data-action="backup">Baixar cópia dos dados</button></span></div></aside>
-<div class="shell"><header><div><h1 id="title"></h1><p id="subtitle"></p></div><div id="headerAction"></div></header><div class="notice"><strong>Ambiente de demonstração</strong> · Dados salvos apenas neste navegador.</div><main id="view"></main></div>
+<aside id="sidebar" aria-label="Menu principal"><div class="sidebar-head"><div class="brand">H<span>2</span>O<span class="brand-tail">stras</span><small>Gestão de entregas</small></div><button type="button" id="sidebarToggle" class="sidebar-toggle" data-action="sidebar-toggle" aria-label="Retrair menu" aria-expanded="true" aria-controls="nav" title="Retrair menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 7-5 5 5 5"/></svg></button></div><nav aria-label="Navegação principal" id="nav"></nav><div class="side-foot"><b>Rio das Ostras · RJ</b><button class="backup-link" data-action="backup" aria-label="Baixar cópia dos dados" title="Baixar cópia dos dados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg><span>Baixar cópia dos dados</span></button></div></aside><button class="sidebar-backdrop" data-action="sidebar-close" aria-label="Fechar menu" tabindex="-1" hidden></button>
+<div class="shell"><header><div class="header-title"><button class="mobile-menu-button" type="button" data-action="sidebar-open" aria-label="Abrir menu" aria-controls="sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div><h1 id="title"></h1><p id="subtitle"></p></div></div><div id="headerAction"></div></header><div class="notice"><strong>Ambiente de demonstração</strong> · Dados salvos apenas neste navegador.</div><main id="view"></main></div>
 <dialog id="dialog" aria-labelledby="dialogTitle"><div class="dialog-head"><div><div class="eyebrow">H2Ostras • Operação</div><h2 id="dialogTitle"></h2></div><button type="button" data-action="close" aria-label="Fechar janela">×</button></div><div id="dialogBody"></div></dialog><div id="toast" role="status" class="toast hidden"></div>
 <script>
 'use strict';
@@ -80,7 +147,30 @@ function change(fn){const next=structuredClone(db);fn(next);return commit(next)}
 function table(heads,rows){return rows.length?`<div class="table-wrap"><table><thead><tr>${heads.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<div class="empty">Nenhum registro encontrado. Cadastre um item ou ajuste os filtros.</div>'}
 function toolsBar(extra=''){return `<div class="toolbar"><input id="search" type="search" aria-label="Buscar registros" placeholder="Buscar por nome, pedido ou endereço" value="${esc(query)}">${extra}</div>`}
 function matches(s){return String(s).toLocaleLowerCase().includes(query.toLocaleLowerCase())}
-function render(){const r=routes[current];$('#title').textContent=profileId?'Histórico do cliente':r[0];$('#subtitle').textContent=r[1];$('#nav').innerHTML=Object.entries(routes).map(([key,v])=>`<a href="#${key}" ${key===current?'aria-current="page"':''}>${icon(v[2])}<span>${v[0]}</span></a>`).join('');$('#headerAction').innerHTML=profileId?btn('Editar cliente','client',profileId):current==='atendimento'?'<a class="button primary" href="#nova-venda">+ Nova venda</a>':current==='agenda'?btn('+ Nova venda neste dia','agenda-sale','','primary'):current==='despesas'?btn('+ Nova despesa','expense','','primary'):current==='clientes'?btn('+ Novo cliente','client','','primary'):'';$('#view').innerHTML=(storageError?`<p role="alert" class="error">${esc(storageError)}</p>`:'')+views[current]();document.title=r[0]+' • H2Ostras';}
+
+const sidebarMedia=window.matchMedia('(max-width:700px)');
+let sidebarCollapsed=false;
+try{sidebarCollapsed=localStorage.getItem('h2ostras.sidebar.collapsed')==='true'}catch{}
+function syncSidebar(){
+ const mobile=sidebarMedia.matches,open=document.body.classList.contains('sidebar-open');
+ document.body.classList.toggle('sidebar-collapsed',sidebarCollapsed&&!mobile);
+ const toggle=$('#sidebarToggle'),label=mobile?'Fechar menu':sidebarCollapsed?'Expandir menu':'Retrair menu';
+ toggle.setAttribute('aria-label',label);toggle.title=label;toggle.setAttribute('aria-expanded',String(mobile?open:!sidebarCollapsed));
+ $('.mobile-menu-button').setAttribute('aria-expanded',String(mobile&&open));
+ $('.sidebar-backdrop').hidden=!(mobile&&open);
+ $('.shell').inert=mobile&&open;
+ $('#sidebar').inert=mobile&&!open;
+ if(mobile&&open){$('#sidebar').setAttribute('role','dialog');$('#sidebar').setAttribute('aria-modal','true')}else{$('#sidebar').removeAttribute('role');$('#sidebar').removeAttribute('aria-modal')}
+}
+function setMobileMenu(open,restore=true){document.body.classList.toggle('sidebar-open',open);syncSidebar();if(open)$('#sidebarToggle').focus();else if(restore&&sidebarMedia.matches)$('.mobile-menu-button').focus()}
+sidebarMedia.addEventListener('change',()=>{setMobileMenu(false,false)});
+document.addEventListener('keydown',e=>{
+ if(!sidebarMedia.matches||!document.body.classList.contains('sidebar-open'))return;
+ if(e.key==='Escape'){e.preventDefault();setMobileMenu(false);return}
+ if(e.key==='Tab'){const nodes=[...$('#sidebar').querySelectorAll('a,button')],first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}
+});
+syncSidebar();
+function render(){const r=routes[current];$('#title').textContent=profileId?'Histórico do cliente':r[0];$('#subtitle').textContent=r[1];$('#nav').innerHTML=Object.entries(routes).map(([key,v])=>`<a href="#${key}" aria-label="${v[0]}" title="${v[0]}" ${key===current?'aria-current="page"':''}>${icon(v[2])}<span>${v[0]}</span></a>`).join('');$('#headerAction').innerHTML=profileId?btn('Editar cliente','client',profileId):current==='atendimento'?'<a class="button primary" href="#nova-venda">+ Nova venda</a>':current==='agenda'?btn('+ Nova venda neste dia','agenda-sale','','primary'):current==='despesas'?btn('+ Nova despesa','expense','','primary'):current==='clientes'?btn('+ Novo cliente','client','','primary'):'';$('#view').innerHTML=(storageError?`<p role="alert" class="error">${esc(storageError)}</p>`:'')+views[current]();document.title=r[0]+' • H2Ostras';}
 let saleDraft=null,addingSaleClient=false;
 const simpleStage=o=>['Solicitação','Orçamento'].includes(o.status)?'A atender':['Agendado','Em rota','Abastecendo'].includes(o.status)?'Entrega':o.status==='Cancelado'?'Cancelado':'Concluído';
 function saleFields(o,editing=false){
@@ -179,7 +269,11 @@ if(kind==='client'&&addingSaleClient&&saleDraft){saleDraft.client=id||db.clients
 closeEditor();if(kind==='order'&&form.id==='saleForm'){saleDraft=null;location.hash='atendimento';}render();notify(kind==='order'?'Venda salva com sucesso.':'Registro salvo com sucesso.');}
 function download(content,name,type){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([content],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 document.addEventListener('invalid',e=>{e.target.closest('details')?.setAttribute('open','')},true);
-document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action,id=b.dataset.id;
+document.addEventListener('click',e=>{if(e.target.closest('#nav a')&&sidebarMedia.matches)setMobileMenu(false);const b=e.target.closest('[data-action]');if(!b)return;const a=b.dataset.action,id=b.dataset.id;
+if(a==='sidebar-toggle'){if(sidebarMedia.matches){setMobileMenu(false)}else{sidebarCollapsed=!sidebarCollapsed;try{localStorage.setItem('h2ostras.sidebar.collapsed',String(sidebarCollapsed))}catch{}syncSidebar()}return}
+if(a==='sidebar-open'){setMobileMenu(true);return}
+if(a==='sidebar-close'){setMobileMenu(false);return}
+
 if(a==='calendar-prev'||a==='calendar-next'){const d=new Date(calendarMonth+'-01T12:00:00');d.setMonth(d.getMonth()+(a==='calendar-prev'?-1:1));calendarMonth=calendarISO(d).slice(0,7);agendaDay=calendarMonth+'-01';render();return}
 if(a==='calendar-today'){agendaDay=today();calendarMonth=agendaDay.slice(0,7);render();return}
 if(a==='calendar-day'){agendaDay=id;calendarMonth=id.slice(0,7);render();return}
